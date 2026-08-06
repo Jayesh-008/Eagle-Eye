@@ -30,11 +30,10 @@ services:
         fromService:
           type: web
           name: eagle-eye-backend
-          property: url
-          suffix: /api
+          property: host
 
 databases:
   # Managed PostgreSQL Database
   - name: eagle-eye-db
     databaseName: eagle_eye
-    user: postgres
+    user: eagle_eye_user
