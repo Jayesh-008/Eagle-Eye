@@ -15,6 +15,7 @@ import AdminPanel from './components/AdminPanel'
 import AuthModal from './components/AuthModal'
 import Toast from './components/Toast'
 import api from './api'
+import { categoriesSeed, productsSeed } from './data/mockData'
 
 const shopFilters = ['All Collections', 'Eyeglasses', 'Sunglasses', 'Contact Lenses', 'Kids Glasses']
 const whyItems = [
@@ -98,10 +99,17 @@ function App() {
       const fetchedProducts = Array.isArray(productsResponse.data.products) ? productsResponse.data.products : productsResponse.data
       const fetchedCategories = Array.isArray(categoriesResponse.data) ? categoriesResponse.data : []
 
-      setProducts(fetchedProducts)
-      setCategories(fetchedCategories)
+      if (fetchedProducts && fetchedProducts.length > 0) {
+        setProducts(fetchedProducts)
+        setCategories(fetchedCategories.length > 0 ? fetchedCategories : categoriesSeed)
+      } else {
+        setProducts(productsSeed)
+        setCategories(categoriesSeed)
+      }
     } catch {
-      setError('Unable to reach the store API right now. Please try again later.')
+      setProducts(productsSeed)
+      setCategories(categoriesSeed)
+      setError('Unable to reach the store API server (http://localhost:5000). Showing stored catalog edit.')
     } finally {
       setLoading(false)
     }
@@ -565,10 +573,24 @@ function App() {
                 ) : null}
 
                 {!loading && error ? (
-                  <div className="mt-8 rounded-[24px] border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div>
+                  <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-[24px] border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 shadow-sm">
+                    <div className="flex items-center gap-3">
+                      <span className="relative flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                      </span>
+                      <span>{error}</span>
+                    </div>
+                    <button
+                      onClick={loadCatalog}
+                      className="shrink-0 rounded-full bg-[#111111] px-5 py-2 text-xs font-semibold uppercase tracking-wider text-white transition hover:bg-[#D4AF37] hover:text-[#111111]"
+                    >
+                      Retry Connection
+                    </button>
+                  </div>
                 ) : null}
 
-                {!loading && !error ? (
+                {!loading ? (
                   <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {filteredProducts.map((product) => (
                       <ProductCard

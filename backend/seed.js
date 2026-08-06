@@ -3,14 +3,24 @@ import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
 import { categoriesSeed, productsSeed } from './utils/mockData.js'
 
-dotenv.config()
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+import fs from 'fs'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+dotenv.config({ path: join(__dirname, '.env') })
 
 const { Pool } = pg
-const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+const pool = new Pool({ connectionString: process.env.DATABASE_URL || 'postgresql://postgres:2008@localhost:5432/eagle_eye' })
 
 async function seed() {
   const client = await pool.connect()
   try {
+    console.log('🌱 Initializing schema...')
+    const schemaPath = join(__dirname, 'models', 'schema.sql')
+    const sql = fs.readFileSync(schemaPath, 'utf8')
+    await client.query(sql)
+
     console.log('🌱 Seeding database...')
 
     // Seed categories

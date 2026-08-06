@@ -3,7 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
-import { pool } from './models/database.js'
+import { pool, initDb } from './models/database.js'
 import authRoutes from './routes/authRoutes.js'
 import productRoutes from './routes/productRoutes.js'
 import categoryRoutes from './routes/categoryRoutes.js'
@@ -44,6 +44,7 @@ const PORT = process.env.PORT || 5000
 app.listen(PORT, async () => {
   try {
     await pool.query('SELECT 1')
+    await initDb()
     console.log(`✅ PostgreSQL connected`)
     console.log(`🚀 Server running on http://localhost:${PORT}`)
   } catch (err) {
