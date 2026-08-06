@@ -1,9 +1,7 @@
 services:
-  # Backend API Web Service (Free Tier)
   - type: web
     name: eagle-eye-backend
     env: node
-    plan: free
     buildCommand: cd backend && npm install
     startCommand: cd backend && npm start
     envVars:
@@ -16,13 +14,10 @@ services:
       - key: PORT
         value: 5000
 
-  # Frontend Static Site (Free Tier)
-  - type: web
+  - type: static
     name: eagle-eye-frontend
-    env: static
-    plan: free
     buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
+    staticPublishPath: dist
     routes:
       - type: rewrite
         source: /*
@@ -35,8 +30,6 @@ services:
           property: host
 
 databases:
-  # Managed PostgreSQL Database (Free Tier)
   - name: eagle-eye-db
     databaseName: eagle_eye
     user: eagle_eye_user
-    plan: free
