@@ -1,0 +1,22 @@
+{
+  "name": "eagle-eye-backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.0",
+    "dotenv": "^16.4.0",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.0.1",
+    "pg": "^8.15.0"
+  },
+  "devDependencies": {
+    "express-validator": "^7.3.2",
+    "nodemon": "^3.1.14"
+  }
+}
