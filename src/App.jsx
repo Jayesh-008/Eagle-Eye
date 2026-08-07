@@ -109,7 +109,7 @@ function App() {
     } catch {
       setProducts(productsSeed)
       setCategories(categoriesSeed)
-      setError('Unable to reach the store API server (http://localhost:5000). Showing stored catalog edit.')
+      setError('Unable to reach the store API server. Showing cached catalog edit.')
     } finally {
       setLoading(false)
     }
