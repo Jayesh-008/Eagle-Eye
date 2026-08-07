@@ -43,12 +43,25 @@ app.use('/api/wishlist', wishlistRoutes)
 app.use('/api/contact', contactRoutes)
 
 // Serve frontend dist static assets in production or when dist folder exists
-const distPath = join(__dirname, '../dist')
-if (fs.existsSync(distPath)) {
+const possibleDistPaths = [
+  join(__dirname, '../dist'),
+  join(__dirname, 'dist'),
+  join(__dirname, '../public'),
+  join(__dirname, 'public')
+]
+const distPath = possibleDistPaths.find((p) => fs.existsSync(p))
+
+if (distPath) {
+  console.log(`📦 Serving frontend static assets from: ${distPath}`)
   app.use(express.static(distPath))
   app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api')) return next()
     res.sendFile(join(distPath, 'index.html'))
+  })
+} else {
+  console.warn('⚠️ Frontend dist folder not found!')
+  app.get('/', (_req, res) => {
+    res.send('Eagle Eye Backend API is running. (Note: Frontend static build not found).')
   })
 }
 
