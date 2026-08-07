@@ -14,6 +14,8 @@ import reviewRoutes from './routes/reviewRoutes.js'
 import wishlistRoutes from './routes/wishlistRoutes.js'
 import contactRoutes from './routes/contactRoutes.js'
 
+import fs from 'fs'
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 dotenv.config({ path: join(__dirname, '.env') })
 
@@ -39,6 +41,16 @@ app.use('/api/users', userRoutes)
 app.use('/api/reviews', reviewRoutes)
 app.use('/api/wishlist', wishlistRoutes)
 app.use('/api/contact', contactRoutes)
+
+// Serve frontend dist static assets in production or when dist folder exists
+const distPath = join(__dirname, '../dist')
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath))
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next()
+    res.sendFile(join(distPath, 'index.html'))
+  })
+}
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, async () => {

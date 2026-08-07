@@ -1,0 +1,21 @@
+services:
+  # Single Fullstack Web Service (Serves API + React SPA dist)
+  - type: web
+    name: eagle-eye-backend
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: eagle-eye-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+
+databases:
+  - name: eagle-eye-db
+    databaseName: eagle_eye
+    user: eagle_eye_user

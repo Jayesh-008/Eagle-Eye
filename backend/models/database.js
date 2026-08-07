@@ -10,8 +10,11 @@ dotenv.config({ path: join(__dirname, '../.env') })
 
 const { Pool } = pg
 
+const isProduction = process.env.NODE_ENV === 'production' || (process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('localhost') && !process.env.DATABASE_URL.includes('127.0.0.1'))
+
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL || 'postgresql://postgres:2008@localhost:5432/eagle_eye',
+  ssl: isProduction ? { rejectUnauthorized: false } : false
 })
 
 pool.on('error', (err) => {
