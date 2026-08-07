@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "cd .. && npm install && npm run build",
+    "postinstall": "cd .. && npm install && npm run build",
     "seed": "node seed.js"
   },
   "dependencies": {

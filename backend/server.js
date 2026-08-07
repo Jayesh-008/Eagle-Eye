@@ -49,7 +49,7 @@ const possibleDistPaths = [
   join(__dirname, '../public'),
   join(__dirname, 'public')
 ]
-const distPath = possibleDistPaths.find((p) => fs.existsSync(p))
+const distPath = possibleDistPaths.find((p) => fs.existsSync(join(p, 'index.html')))
 
 if (distPath) {
   console.log(`📦 Serving frontend static assets from: ${distPath}`)

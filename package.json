@@ -8,6 +8,7 @@
     "dev:frontend": "vite",
     "dev:backend": "node backend/server.js",
     "build": "vite build && node -e \"import('fs').then(f => f.cpSync('dist', 'backend/dist', {recursive: true}))\"",
+    "postinstall": "npm run build",
     "start": "node backend/server.js",
     "seed": "npm run seed --prefix backend",
     "lint": "oxlint",
